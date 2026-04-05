@@ -1,0 +1,236 @@
+/* =========================================
+   ORDER MODULE STYLES (Prefix: odr-)
+   ========================================= */
+
+/* --- CHIA LAYOUT TRÁI - PHẢI CHUẨN MỰC --- */
+.odr-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    /* Cột trái tự co giãn, Cột phải cố định 340px */
+    gap: 24px;
+    align-items: start;
+}
+
+/* Responsive: Rớt xuống 1 cột trên màn hình nhỏ */
+@media (max-width: 1024px) {
+    .odr-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.odr-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* --- CÁC THÀNH PHẦN TRONG BẢNG CHI TIẾT --- */
+.odr-table-header {
+    background: var(--body-bg);
+}
+
+.odr-table-mb-0 {
+    margin-bottom: 0;
+}
+
+.odr-product-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.odr-product-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.odr-product-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    background: var(--body-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.odr-product-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.odr-product-id {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* Tiền tệ & Căn lề */
+.odr-col-center {
+    text-align: center;
+}
+
+.odr-col-right {
+    text-align: right;
+}
+
+.odr-qty {
+    font-weight: 600;
+}
+
+.odr-price-muted {
+    color: var(--text-muted);
+}
+
+.odr-price-bold {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.odr-flex-center {
+    justify-content: center;
+    align-items: center;
+}
+
+/* Box Tổng tiền */
+.odr-summary-wrapper {
+    border-top: 1px solid var(--card-border);
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+.odr-summary-box {
+    width: 300px;
+}
+
+.odr-summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 12px;
+    font-weight: bold;
+    font-size: 18px;
+    color: var(--text-primary);
+}
+
+.odr-total-accent {
+    color: var(--sb-accent);
+}
+
+/* --- THÔNG TIN GIAO HÀNG (Sắp xếp ngang hàng) --- */
+.odr-shipping-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.odr-info-inline {
+    display: flex;
+    align-items: baseline;
+    /* Căn thẳng chân chữ */
+    gap: 8px;
+    /* Khoảng cách giữa Label và Data */
+}
+
+.odr-label-inline {
+    color: var(--text-muted);
+    font-size: 13px;
+    white-space: nowrap;
+    /* Ngăn không cho chữ bị rớt dòng */
+    min-width: 130px;
+}
+
+.odr-val-fw {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+/* --- WIDGET NÚT BẤM & FORM DUYỆT ĐƠN --- */
+.odr-select-bold {
+    font-weight: 600;
+}
+
+.odr-mt-16 {
+    margin-top: 16px;
+}
+
+.odr-mt-24 {
+    margin-top: 24px;
+}
+
+.odr-btn-full {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Tùy biến riêng cho nút Hủy Đơn Hàng */
+.odr-btn-cancel {
+    color: #d93025 !important;
+    border-color: #fad2cf !important;
+    background: #fce8e6 !important;
+}
+
+.odr-btn-cancel:hover {
+    background: #f8d8d6 !important;
+}
+
+/* --- WIDGET USER PROFILE --- */
+.odr-user-profile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.odr-user-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--sb-accent-soft);
+    color: var(--sb-accent);
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.odr-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.odr-user-name {
+    font-weight: bold;
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.odr-user-email {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+/* --- UTILITIES CHO TRANG INDEX (DANH SÁCH) --- */
+.odr-id-mono {
+    font-family: monospace;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.odr-date-sm {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.odr-pagination-wrap {
+    border-top: 1px solid var(--card-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}

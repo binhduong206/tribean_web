@@ -1,0 +1,15 @@
+/* ── Filter Bar ────────────────────────────── */
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.filter-bar .form-control {
+    width: auto;
+    min-width: 160px;
+}
+
+.filter-spacer { flex: 1; }

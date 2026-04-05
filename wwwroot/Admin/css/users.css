@@ -1,0 +1,103 @@
+/* Chỉ thêm một chút CSS nội bộ nhỏ để bo tròn ảnh Avatar thay vì hình vuông như Product */
+.user-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 20px;
+    align-items: start;
+}
+
+.user-form-side {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.user-detail-avatar {
+    width: 240px !important;
+    height: 240px !important;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto;
+    display: block;
+    box-shadow: var(--card-shadow);
+}
+
+.user-empty-avatar {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    background: var(--content-bg);
+    font-size: 64px;
+}
+
+.user-stat-divider {
+    border-left: 1px solid var(--card-border);
+    padding-left: 40px;
+}
+
+.user-stats-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.user-stat-item {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--card-shadow);
+}
+
+.user-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.user-stat-icon.total {
+    background: var(--blue-soft);
+    color: var(--blue-text);
+}
+
+.user-stat-icon.admin {
+    background: var(--purple-soft);
+    color: var(--purple-text);
+}
+
+.user-stat-icon.client {
+    background: var(--green-soft);
+    color: var(--green-text);
+}
+
+.user-stat-val {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.user-stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.user-text-danger {
+    display: inline-block;
+    color: var(--red);
+    margin-top: 10px;
+    font-size: 12px;
+}

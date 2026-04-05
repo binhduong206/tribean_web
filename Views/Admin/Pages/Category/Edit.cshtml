@@ -1,0 +1,43 @@
+@model Tribean.Models.Category
+@{
+    Layout = "~/Views/Admin/Layouts/_AdminLayout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/Admin/css/categories.css" />
+}
+
+<div class="page-header">
+    <div class="page-header-info">
+        <h1>Edit Category</h1>
+    </div>
+    <div class="page-header-actions">
+        <a href="/Admin/Category" class="btn btn-secondary btn-sm">← Back</a>
+    </div>
+</div>
+
+<form method="post" action="/Admin/Category/Update/@Model.Id">
+    @Html.AntiForgeryToken()
+    
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-error" style="color:red; margin-bottom: 15px;">
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        </div>
+    }
+
+    <div class="card" style="max-width: 500px;">
+        <div class="card-body">
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label">Category Name *</label>
+                <input type="text" name="CategoryName" class="form-control" required 
+                       value="@Model.CategoryName" />
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
+                Save Changes
+            </button>
+        </div>
+    </div>
+</form>

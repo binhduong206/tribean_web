@@ -1,0 +1,137 @@
+@* Views/Admin/Pages/Product/Add.cshtml *@
+@model Tribean.Models.Product
+@{
+    Layout = "~/Views/Admin/Layouts/_AdminLayout.cshtml";
+    ViewData["Title"] = "Add Product";
+    ViewData["PageTitle"] = "Add Product";
+    ViewData["Breadcrumb"] = "Catalog / Products / Add";
+
+    var categories = ViewData["Categories"] as IEnumerable<Tribean.Models.Category> ?? Enumerable.Empty<Tribean.Models.Category>();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/Admin/css/products.css" />
+    <link rel="stylesheet" href="~/Admin/css/image-upload.css" />
+}
+
+<div class="page-header">
+    <div class="page-header-info">
+        <h1>Add New Product</h1>
+        <p>Fill in the details to add a new product to your menu.</p>
+    </div>
+    <div class="page-header-actions">
+        <a href="/Admin/Product" class="btn btn-secondary btn-sm" style="display: inline-flex; align-items: center; gap: 6px;">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Products
+        </a>
+    </div>
+</div>
+
+<form method="post" action="/Admin/Product/Create" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    
+    @if (ViewBag.DebugErrors != null)
+    {
+        <div class="alert alert-error" style="background-color: #ffeaea; color: #d93025; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #f2a6a6;">
+            <h4 style="margin-top: 0;">Oops! Dữ liệu bị từ chối vì:</h4>
+            <ul style="margin-bottom: 0;">
+                @foreach (var error in ViewBag.DebugErrors)
+                {
+                    <li>@error</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;">
+        @* ── Left: main info ── *@
+        <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Product Information</span>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label">Product Name *</label>
+                        <input type="text" name="ProductName" class="form-control" placeholder="e.g. Cà Phê Sữa Đá" required value="@Model?.ProductName" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea name="Description" class="form-control" rows="4" placeholder="Describe your product…" style="resize:vertical;">@Model?.Description</textarea>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div class="form-group">
+                            <label class="form-label">Category *</label>
+                            <select name="CategoryId" class="form-control" required>
+                                <option value="">Select category</option>
+                                @foreach (var cat in categories)
+                                {
+                                    <option value="@cat.Id" selected="@(Model?.CategoryId == cat.Id ? "selected" : null)">@cat.CategoryName</option>
+                                }
+                            </select>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                            <div class="form-group">
+                                <label class="form-label">Base Price ($) *</label>
+                                <input type="number" name="Price" class="form-control" placeholder="45000" min="0" required value="@Model?.Price" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Discount (%)</label>
+                                <input type="number" name="Discount" class="form-control" placeholder="0" min="0" max="100" value="@(Model?.Discount ?? 0)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* ── Right: image + status ── *@
+        <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Main Image</span>
+                </div>
+                <div class="card-body">
+                    <div class="img-upload-zone" id="uploadZone" onclick="document.getElementById('mainImage').click()">
+                        <img id="imgPreview" src="" alt="" style="display:none;width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:8px;" />
+                        <div id="uploadPlaceholder">
+                            <div class="img-upload-icon">
+                                <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 4v16m8-8H4"/></svg>
+                            </div>
+                            <div class="img-upload-text">Click to upload image</div>
+                            <div class="img-upload-hint">PNG, JPG up to 5MB</div>
+                        </div>
+                        <input type="file" id="mainImage" name="mainImage" style="display:none;" accept="image/*" onchange="previewImage(this)" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Status</span>
+                </div>
+                <div class="card-body">
+                    <select name="Status" class="form-control">
+                        <option value="true" selected="@(Model?.Status == true ? "selected" : null)">Active</option>
+                        <option value="false" selected="@(Model?.Status == false ? "selected" : null)">Inactive</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                Add Product
+            </button>
+            <a href="/Admin/Product" class="btn btn-secondary" style="width:100%;justify-content:center;">
+                Cancel
+            </a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/Admin/js/index.js"></script>
+}

@@ -1,0 +1,184 @@
+@model Tribean.Models.Order
+@using Tribean.Models.Enums
+@using Tribean.Routers.Admin
+@{
+    Layout = "~/Views/Admin/Layouts/_AdminLayout.cshtml";
+    ViewData["Title"] = "Order Detail";
+    ViewData["PageTitle"] = "Order Detail";
+    ViewData["Breadcrumb"] = "Sales / Orders / Detail";
+    var shortId = Model.Id.Length > 8 ? Model.Id.Substring(0, 8).ToUpper() : Model.Id.ToUpper();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/Admin/css/orders.css" />
+}
+
+<div class="page-header">
+    <div class="page-header-info">
+        <h1>Order #@shortId</h1>
+        <p>Placed on @Model.OrderDate.ToString("MMMM dd, yyyy 'at' HH:mm")</p>
+    </div>
+    <div class="page-header-actions">
+        <a href="/@OrderRouter.Index" class="btn btn-secondary btn-sm odr-flex-center" style="display: inline-flex; gap: 6px;">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            Back to Orders
+        </a>
+    </div>
+</div>
+
+@if (TempData["Success"] != null) { <div class="alert alert-success mb-16">@TempData["Success"]</div> }
+@if (TempData["Error"] != null) { <div class="alert alert-error mb-16">@TempData["Error"]</div> }
+
+<div class="odr-detail-grid">
+    
+    <div class="odr-column">
+        
+        <div class="card">
+            <div class="card-header"><span class="card-title">Order Items (@Model.OrderDetails.Count)</span></div>
+            <div class="table-wrap">
+                <table class="odr-table-mb-0">
+                    <thead class="odr-table-header">
+                        <tr>
+                            <th>Product</th>
+                            <th>Size</th>
+                            <th class="odr-col-center">Qty</th>
+                            <th class="odr-col-right">Unit Price</th>
+                            <th class="odr-col-right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderDetails)
+                        {
+                            var lineTotal = item.Quantity * item.UnitPrice;
+                            <tr>
+                                <td>
+                                    <div class="odr-product-cell">
+                                        @if (!string.IsNullOrEmpty(item.Product?.MainImgUrl))
+                                        {
+                                            <img src="@item.Product.MainImgUrl" class="odr-product-img" />
+                                        }
+                                        else
+                                        {
+                                            <div class="odr-product-placeholder">☕</div>
+                                        }
+                                        <div>
+                                            <div class="odr-product-name">@(item.Product?.ProductName ?? "Unknown Product")</div>
+                                            <div class="odr-product-id">ID: #@item.ProductId.Substring(0,8).ToUpper()</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-secondary">@(item.Size?.SizeName ?? "N/A")</span></td>
+                                <td class="odr-col-center odr-qty">x@(item.Quantity)</td>
+                                <td class="odr-col-right odr-price-muted">@item.UnitPrice.ToString("N0")$</td>
+                                <td class="odr-col-right odr-price-bold">@lineTotal.ToString("N0")$</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="odr-summary-wrapper">
+                <div class="odr-summary-box">
+                    <div class="odr-summary-row">
+                        <span>Total Amount</span>
+                        <span class="odr-total-accent">@Model.TotalPrice.ToString("N0")$</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="card-title">Shipping Information</span></div>
+            <div class="card-body odr-shipping-list">
+                
+                <div class="odr-info-inline">
+                    <div class="odr-label-inline">Receiver Name:</div>
+                    <div class="odr-val-fw">@(string.IsNullOrEmpty(Model.ReceiverName) ? (Model.User?.UserName ?? "N/A") : Model.ReceiverName)</div>
+                </div>
+                
+                <div class="odr-info-inline">
+                    <div class="odr-label-inline">Phone Number:</div>
+                    <div class="odr-val-fw">@(string.IsNullOrEmpty(Model.ReceiverPhoneNumber) ? "N/A" : Model.ReceiverPhoneNumber)</div>
+                </div>
+                
+                <div class="odr-info-inline">
+                    <div class="odr-label-inline">Shipping Address:</div>
+                    <div class="odr-val-fw">@(string.IsNullOrEmpty(Model.ReceiverAddress) ? "N/A" : Model.ReceiverAddress)</div>
+                </div>
+
+            </div>
+        </div>
+
+        
+    </div>
+
+    <div class="odr-column">
+        
+        <div class="card">
+            <div class="card-header"><span class="card-title">Process Order</span></div>
+            <div class="card-body">
+                <form method="post" action="/@OrderRouter.UpdateStatus.Replace("{id}", Model.Id)">
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label class="form-label">Payment Status</label>
+                        <select name="newPaymentStatus" class="form-control odr-select-bold">
+                            @foreach (PaymentStatus pStatus in Enum.GetValues(typeof(PaymentStatus)))
+                            {
+                                <option value="@pStatus" selected="@(Model.PaymentStatus == pStatus ? "selected" : null)">@pStatus.ToString()</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group odr-mt-16">
+                        <label class="form-label">Order Status</label>
+                        <select name="newStatus" class="form-control odr-select-bold">
+                            @foreach (OrderStatus status in Enum.GetValues(typeof(OrderStatus)))
+                            {
+                                <option value="@status" selected="@(Model.Status == status ? "selected" : null)">@status.ToString()</option>
+                            }
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary odr-btn-full odr-mt-24">Update Status</button>
+                </form>
+
+                @if (Model.Status != OrderStatus.Cancelled && Model.Status != OrderStatus.Delivered)
+                {
+                    <form method="post" action="/@OrderRouter.Cancel.Replace("{id}", Model.Id)" onsubmit="return confirm('Are you sure you want to cancel this order?');">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-secondary odr-btn-full odr-mt-16 odr-btn-cancel">
+                            Cancel Order
+                        </button>
+                    </form>
+                }
+            </div>
+        </div>
+
+        @if (Model.User != null)
+        {
+            <div class="card">
+                <div class="card-header"><span class="card-title">Customer Profile</span></div>
+                <div class="card-body text-center odr-user-profile">
+                    <div class="odr-user-avatar">
+                        @if (!string.IsNullOrEmpty(Model.User.AvatarUrl)) 
+                        {
+                            <img src="@Model.User.AvatarUrl" alt="@Model.User.UserName" class="odr-avatar-img" />
+                        }
+                        else
+                        {
+                            @(Model.User.UserName.Substring(0,1).ToUpper())
+                        }
+                    </div>
+                    <div>
+                        <div class="odr-user-name">@Model.User.UserName</div>
+                        <div class="odr-user-email">@Model.User.Email</div>
+                    </div>
+                </div>
+            </div>
+        }
+        
+    </div>
+    
+</div>
+
+@section Scripts {
+    <script src="~/Admin/js/index.js"></script>
+}

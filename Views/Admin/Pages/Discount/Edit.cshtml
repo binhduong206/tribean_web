@@ -1,0 +1,63 @@
+@model Tribean.Models.Discount
+@using Tribean.Routers.Admin
+@{
+    Layout = "~/Views/Admin/Layouts/_AdminLayout.cshtml";
+    ViewData["Title"] = "Edit Discount";
+    ViewData["PageTitle"] = "Edit Discount";
+    ViewData["Breadcrumb"] = "Sales / Discounts / Edit";
+}
+
+@section Styles { <link rel="stylesheet" href="~/Admin/css/discounts.css" /> }
+
+<div class="page-header">
+    <div class="page-header-info"><h1>Edit Promo Code</h1></div>
+    <div class="page-header-actions"><a href="/@DiscountRouter.Index" class="btn btn-secondary btn-sm">Cancel</a></div>
+</div>
+
+<div class="card" style="max-width: 800px;">
+    <div class="card-body">
+        <form method="post" action="/@DiscountRouter.Edit.Replace("{id}", Model.Id)" class="dsc-form-grid">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="Id" value="@Model.Id" />
+
+            <div class="form-group dsc-full-width">
+                <label class="form-label">Discount Code Name</label>
+                <input type="text" name="DiscountName" class="form-control" value="@Model.DiscountName" required placeholder="e.g. SUMMER2026" style="text-transform: uppercase;" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Discount Type</label>
+                <select name="DiscountType" class="form-control">
+                    <option value="percent" selected="@(Model.DiscountType == "percent" ? "selected" : null)">Percentage (%)</option>
+                    <option value="fixed" selected="@(Model.DiscountType == "fixed" ? "selected" : null)">Fixed Amount ($)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Discount Value</label>
+                <input type="number" name="DiscountValue" class="form-control" value="@Model.DiscountValue" required min="1" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Start Date</label>
+                <input type="datetime-local" name="StartDate" class="form-control" value="@Model.StartDate.ToString("yyyy-MM-ddTHH:mm")" required />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">End Date</label>
+                <input type="datetime-local" name="EndDate" class="form-control" value="@Model.EndDate.ToString("yyyy-MM-ddTHH:mm")" required />
+            </div>
+
+            <div class="form-group dsc-full-width">
+                <label class="form-label dsc-flex-checkbox">
+                    <input type="checkbox" name="IsAvailable" value="true" @(Model.IsAvailable ? "checked" : "") style="width: 18px; height: 18px;" />
+                    <strong>Active (Enable this code immediately)</strong>
+                </label>
+            </div>
+
+            <div class="dsc-full-width dsc-form-actions">
+                <button type="submit" class="btn btn-primary">Update Discount</button>
+            </div>
+        </form>
+    </div>
+</div>

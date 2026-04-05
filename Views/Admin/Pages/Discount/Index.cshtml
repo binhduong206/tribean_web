@@ -1,0 +1,187 @@
+@model IEnumerable<Tribean.Models.Discount>
+@using Tribean.Routers.Admin
+@{
+    Layout = "~/Views/Admin/Layouts/_AdminLayout.cshtml";
+    ViewData["Title"] = "Discounts";
+    ViewData["PageTitle"] = "Discounts";
+    ViewData["Breadcrumb"] = "Sales / Discounts";
+
+    var currentSearch = ViewData["Search"] as string ?? "";
+    var currentStatus = ViewData["StatusFilter"] as string ?? "";
+    var totalItems = (int)(ViewData["TotalItems"] ?? 0);
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/Admin/css/discounts.css" />
+    <link rel="stylesheet" href="~/Admin/css/filter-bar.css" />
+    <link rel="stylesheet" href="~/Admin/css/table-actions.css" />
+}
+
+@* ── TempData alerts ── *@
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success mb-16">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-error mb-16">@TempData["Error"]</div>
+}
+
+@* ── Page Header ── *@
+<div class="page-header">
+    <div class="page-header-info">
+        <h1>Discounts</h1>
+        <p>Manage promo codes, sales, and special offers.</p>
+    </div>
+    <div class="page-header-actions">
+        <a href="/@DiscountRouter.Create" class="btn btn-primary btn-sm">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            Add Discount
+        </a>
+    </div>
+</div>
+
+@* ── Filter Bar ── *@
+<form method="get" action="/@DiscountRouter.Index" id="filterForm">
+    <div class="filter-bar">
+        <div class="filter-search">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0" />
+            </svg>
+            <input type="text" name="search" value="@currentSearch" placeholder="Search discount code…" autocomplete="off" />
+        </div>
+
+        <select class="form-control" name="status" onchange="this.form.submit()">
+            <option value="">All Status</option>
+            <option value="true" selected="@(currentStatus == "true" ? "selected" : null)">Active</option>
+            <option value="false" selected="@(currentStatus == "false" ? "selected" : null)">Inactive</option>
+        </select>
+
+        @if (!string.IsNullOrEmpty(currentSearch) || !string.IsNullOrEmpty(currentStatus))
+        {
+            <a href="/@DiscountRouter.Index" class="btn btn-secondary btn-sm">✕ Clear</a>
+        }
+        
+        <div class="filter-spacer"></div>
+    </div>
+</form>
+
+<div class="card">
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <div class="empty-icon">🏷️</div>
+            <p>No discounts found. <a href="/@DiscountRouter.Create" class="text-accent">Create your first promo code</a>.</p>
+        </div>
+    }
+    else
+    {
+        @* ── Table View ── *@
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:40px;"><input type="checkbox" id="checkAll" /></th>
+                        <th>Discount Code</th>
+                        <th>Type & Value</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th style="width:100px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model)
+                    {
+                        var isExpired = d.EndDate < DateTime.Now;
+                        var typeClass = d.DiscountType == "percent" ? "dsc-type-percent" : "dsc-type-fixed";
+                        
+                        <tr>
+                            <td><input type="checkbox" class="row-check" value="@d.Id" /></td>
+                            <td>
+                                <span class="dsc-code-mono">@d.DiscountName</span>
+                            </td>
+                            <td>
+                                <span class="badge @typeClass">
+                                    @(d.DiscountType == "percent" ? $"{d.DiscountValue}% Off" : $"${d.DiscountValue} Off")
+                                </span>
+                            </td>
+                            <td class="dsc-date-col">
+                                @d.StartDate.ToString("dd/MM/yyyy HH:mm")
+                            </td>
+                            <td class="dsc-date-col">
+                                @d.EndDate.ToString("dd/MM/yyyy HH:mm")
+                            </td>
+                            
+                            <td>
+                                @if (isExpired)
+                                {
+                                    <span class="badge badge-secondary" title="Expired">Expired</span>
+                                }
+                                else
+                                {
+                                    <form method="post" action="/@DiscountRouter.Toggle.Replace("{id}", d.Id)" style="margin: 0; display: inline-block;">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" style="background: transparent; border: none; padding: 0; cursor: pointer;">
+                                            @if (d.IsAvailable)
+                                            {
+                                                <span class="badge badge-green toggle-status-btn" title="Click to disable">Active</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-red toggle-status-btn" title="Click to enable">Inactive</span>
+                                            }
+                                        </button>
+                                    </form>
+                                }
+                            </td>
+
+                            <td>
+                                <div class="table-actions">
+                                    <a class="action-btn edit" href="/@DiscountRouter.Edit.Replace("{id}", d.Id)" title="Edit">
+                                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                    </a>
+
+                                    <form method="post" action="/@DiscountRouter.Delete.Replace("{id}", d.Id)" style="display:inline;" onsubmit="return confirm('Delete this discount code?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="action-btn delete" title="Delete">
+                                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @* ── Phân Trang (Giống hệt trang Product) ── *@
+        <div class="card-footer">
+            <span style="font-size:13px; color:var(--text-muted);">
+                Showing @Model.Count() out of @totalItems discounts
+            </span>
+            <div class="pagination">
+                @{
+                    var page = (int)(ViewData["Page"] ?? 1);
+                    var totalPages = (int)(ViewData["TotalPages"] ?? 1);
+                }
+                <a class="page-btn @(page <= 1 ? "disabled" : "")"
+                   href="?page=@(page - 1)&search=@currentSearch&status=@currentStatus">‹</a>
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <a class="page-btn @(i == page ? "active" : "")"
+                       href="?page=@i&search=@currentSearch&status=@currentStatus">@i</a>
+                }
+                <a class="page-btn @(page >= totalPages ? "disabled" : "")"
+                   href="?page=@(page + 1)&search=@currentSearch&status=@currentStatus">›</a>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/Admin/js/index.js"></script>
+}

@@ -1,0 +1,66 @@
+/* ==========================================================================
+   ROLES MANAGEMENT STYLES (Đã thừa kế base.css)
+   ========================================================================== */
+
+/* Thanh bộ lọc (Bao bọc bên ngoài .filter-search của base) */
+.filter-bar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+/* Định dạng chiều rộng cột riêng cho bảng Role */
+.col-id { width: 80px; }
+.col-name { width: auto; }
+.col-actions { width: 120px; text-align: right; }
+
+.cell-id {
+    font-family: monospace; /* Font cho ID nhìn giống mã code */
+}
+
+/* Nút thao tác trong bảng (Edit/Delete) */
+.table-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    transition: all var(--transition);
+}
+
+.action-btn:hover { 
+    background: #f1f3f4; 
+    color: var(--text-primary);
+}
+
+.action-btn.edit:hover { 
+    color: var(--sb-accent); 
+    background: var(--sb-accent-soft); 
+}
+
+.action-btn.delete:hover { 
+    color: var(--red-text); 
+    background: var(--red-soft); 
+}
+
+/* Khung giới hạn form Add/Edit */
+.role-form-container {
+    max-width: 600px;
+    margin-top: 20px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--card-border);
+}

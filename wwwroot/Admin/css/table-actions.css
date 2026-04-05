@@ -1,0 +1,24 @@
+/* Table Actions */
+.table-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.action-btn {
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-xs);
+    transition: all var(--transition);
+    color: var(--text-muted);
+}
+
+.action-btn:hover { background: var(--content-bg); color: var(--text-primary); }
+.action-btn.edit:hover  { background: var(--blue-soft);   color: var(--blue); }
+.action-btn.delete:hover{ background: var(--red-soft);    color: var(--red); }
+.action-btn.view:hover  { background: var(--green-soft);  color: var(--green); }
+
+.action-btn svg { 
+    width: 22px; 
+    height: 22px; 
+}

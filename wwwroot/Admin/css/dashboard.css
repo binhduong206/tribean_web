@@ -1,0 +1,355 @@
+/* =============================================
+   TRIBEAN ADMIN — dashboard.css
+   Chỉ dùng cho trang Dashboard
+   ============================================= */
+
+/* ── Stat Cards ────────────────────────────── */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+    transition: box-shadow var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover { box-shadow: var(--card-shadow-hover); }
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.stat-card.accent-gold::before { background: var(--sb-accent); }
+.stat-card.accent-green::before { background: var(--green); }
+.stat-card.accent-blue::before { background: var(--blue); }
+.stat-card.accent-purple::before { background: var(--purple); }
+
+.stat-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.stat-icon {
+    width: 42px; height: 42px;
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-icon.gold   { background: var(--yellow-soft); color: var(--sb-accent); }
+.stat-icon.green  { background: var(--green-soft);  color: var(--green); }
+.stat-icon.blue   { background: var(--blue-soft);   color: var(--blue); }
+.stat-icon.purple { background: var(--purple-soft); color: var(--purple); }
+
+.stat-icon svg { width: 20px; height: 20px; }
+
+.stat-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 99px;
+}
+
+.stat-change.up   { background: var(--green-soft);  color: var(--green-text); }
+.stat-change.down { background: var(--red-soft);    color: var(--red-text); }
+
+.stat-change svg { width: 11px; height: 11px; }
+
+.stat-value {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* ── Charts Row ────────────────────────────── */
+.charts-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.chart-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+}
+
+.chart-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.chart-card-title {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.chart-card-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.chart-period-tabs {
+    display: flex;
+    background: var(--content-bg);
+    border-radius: var(--radius-sm);
+    padding: 3px;
+    gap: 2px;
+}
+
+.period-tab {
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all var(--transition);
+    cursor: pointer;
+}
+
+.period-tab.active {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.chart-placeholder {
+    height: 220px;
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    padding: 0 4px;
+}
+
+.chart-bar-group {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    flex: 1;
+}
+
+.chart-bar {
+    flex: 1;
+    border-radius: 3px 3px 0 0;
+    transition: opacity var(--transition);
+}
+
+.chart-bar:hover { opacity: 0.8; }
+.chart-bar.primary { background: var(--sb-accent); }
+.chart-bar.secondary { background: var(--blue-soft); }
+
+.chart-x-labels {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 8px;
+}
+
+.chart-x-labels span {
+    font-size: 10px;
+    color: var(--text-muted);
+    flex: 1;
+    text-align: center;
+}
+
+/* Donut chart area */
+.donut-wrap {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.donut-center {
+    text-align: center;
+    position: absolute;
+}
+
+.donut-center-val {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.donut-center-label {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.donut-legend {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.legend-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    flex: 1;
+}
+
+.legend-val {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* ── Bottom Row ────────────────────────────── */
+.bottom-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 16px;
+    padding-bottom: 8px;
+}
+
+/* Recent Orders in dashboard */
+.recent-order-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.recent-order-row:last-child { border-bottom: none; }
+
+.order-id {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.order-customer {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text-secondary);
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.order-amount {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+/* Top Products */
+.top-product-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.top-product-row:last-child { border-bottom: none; }
+
+.product-rank {
+    width: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.product-thumb {
+    width: 36px; height: 36px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--content-bg);
+    border: 1px solid var(--card-border);
+}
+
+.product-info { flex: 1; min-width: 0; }
+
+.product-info-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-info-cat {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.product-sales {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+/* ── Responsive ────────────────────────────── */
+@media (max-width: 1280px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 900px) {
+    .charts-row { grid-template-columns: 1fr; }
+    .bottom-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+}

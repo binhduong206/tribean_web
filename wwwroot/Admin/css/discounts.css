@@ -1,0 +1,80 @@
+
+.dsc-type-percent {
+  background-color: #e8f0fe;
+  color: #1a73e8;
+  font-weight: 600;
+}
+
+.dsc-type-fixed {
+  background-color: #fce8e6;
+  color: #d93025;
+  font-weight: 600;
+}
+
+.dsc-status-active {
+  color: #1e8e3e;
+  font-weight: 600;
+}
+
+.dsc-status-inactive {
+  color: #5f6368;
+  text-decoration: line-through;
+}
+
+.dsc-code-mono {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 15px;
+  color: var(--text-primary);
+  background: var(--body-bg);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px dashed var(--card-border);
+}
+
+.dsc-date-col {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.dsc-date-col strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.dsc-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.dsc-full-width {
+  grid-column: span 2;
+}
+
+.dsc-flex-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.dsc-form-actions {
+  margin-top: 16px;
+  border-top: 1px solid var(--card-border);
+  padding-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dsc-btn-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: 0.2s;
+}
+
+.dsc-btn-toggle:hover {
+  color: var(--sb-accent);
+}

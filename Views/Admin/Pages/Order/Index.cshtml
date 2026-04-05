@@ -1,0 +1,134 @@
+@model IEnumerable<Tribean.Models.Order>
+@using Tribean.Models.Enums
+@using Tribean.Routers.Admin
+@{
+    Layout = "~/Views/Admin/Layouts/_AdminLayout.cshtml";
+    ViewData["Title"] = "Orders Management";
+    ViewData["PageTitle"] = "Orders";
+    ViewData["Breadcrumb"] = "Sales / Orders";
+
+    var currentSearch = ViewData["Search"] as string ?? "";
+    var currentStatus = ViewData["StatusFilter"] as OrderStatus?;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/Admin/css/orders.css" />
+    <link rel="stylesheet" href="~/Admin/css/filter-bar.css" />
+    <link rel="stylesheet" href="~/Admin/css/table-actions.css" />
+}
+
+<div class="page-header">
+    <div class="page-header-info">
+        <h1>Orders Management</h1>
+        <p>Track, process, and manage customer orders.</p>
+    </div>
+</div>
+
+@if (TempData["Success"] != null) { <div class="alert alert-success mb-16">@TempData["Success"]</div> }
+
+<form method="get" action="/@OrderRouter.Index" id="filterForm">
+    <div class="filter-bar">
+        <div class="filter-search">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0" /></svg>
+            <input type="text" name="search" value="@currentSearch" placeholder="Search Order ID, Name..." autocomplete="off" />
+        </div>
+        <select class="form-control" name="status" onchange="this.form.submit()">
+            <option value="">All Statuses</option>
+            @foreach (OrderStatus status in Enum.GetValues(typeof(OrderStatus)))
+            {
+                <option value="@status" selected="@(currentStatus == status ? "selected" : null)">@status.ToString()</option>
+            }
+        </select>
+        @if (!string.IsNullOrEmpty(currentSearch) || currentStatus.HasValue)
+        {
+            <a href="/@OrderRouter.Index" class="btn btn-secondary btn-sm">✕ Clear</a>
+        }
+    </div>
+</form>
+
+<div class="card">
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <div class="empty-icon">🧾</div>
+            <p>No orders found.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Total Price</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                        <th class="odr-col-right" style="width: 80px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in Model)
+                    {
+                        var shortId = o.Id.Length > 8 ? o.Id.Substring(0, 8).ToUpper() : o.Id.ToUpper();
+                        var customerName = !string.IsNullOrEmpty(o.ReceiverName) ? o.ReceiverName : (o.User?.UserName ?? "Guest");
+
+                        var statusBadge = o.Status switch {
+                            OrderStatus.Pending => "badge-yellow",
+                            OrderStatus.Confirmed => "badge-blue",
+                            OrderStatus.Shipping => "badge-purple",
+                            OrderStatus.Delivered => "badge-green",
+                            OrderStatus.Cancelled => "badge-red",
+                            _ => "badge-secondary"
+                        };
+                        var paymentBadge = o.PaymentStatus switch {
+                            PaymentStatus.Unpaid => "badge-red",
+                            PaymentStatus.Paid => "badge-green",
+                            PaymentStatus.Refunded => "badge-yellow",
+                            _ => "badge-secondary"
+                        };
+
+                        <tr>
+                            <td class="odr-id-mono">#@shortId</td>
+                            <td>
+                                <div class="odr-val-fw">@customerName</div>
+                                <div class="odr-label-sm">@(string.IsNullOrEmpty(o.ReceiverPhoneNumber) ? "—" : o.ReceiverPhoneNumber)</div>
+                            </td>
+                            <td class="odr-date-sm">@o.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td class="odr-price-bold">@o.TotalPrice.ToString("N0")$</td>
+                            <td><span class="badge @paymentBadge">@o.PaymentStatus.ToString()</span></td>
+                            <td><span class="badge @statusBadge">@o.Status.ToString()</span></td>
+                            <td>
+                                <div class="table-actions"  style="justify-content: center;">
+                                    <a class="action-btn view" href="/@OrderRouter.Detail.Replace("{id}", o.Id)" title="Process Order">
+                                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S3.732 16.057 2.458 12z" /></svg>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="odr-pagination-wrap">
+            <span class="odr-label-sm">Showing @Model.Count() orders</span>
+            <div class="pagination">
+                @{
+                    var pageIndex = (int)(ViewData["Page"] ?? 1);
+                    var totalPages = (int)(ViewData["TotalPages"] ?? 1);
+                }
+                <a class="page-btn @(pageIndex <= 1 ? "disabled" : "")" href="?page=@(pageIndex - 1)&search=@currentSearch&status=@currentStatus">‹</a>
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <a class="page-btn @(i == pageIndex ? "active" : "")" href="?page=@i&search=@currentSearch&status=@currentStatus">@i</a>
+                }
+                <a class="page-btn @(pageIndex >= totalPages ? "disabled" : "")" href="?page=@(pageIndex + 1)&search=@currentSearch&status=@currentStatus">›</a>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts { <script src="~/Admin/js/index.js"></script> }

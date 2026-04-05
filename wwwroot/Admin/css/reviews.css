@@ -1,0 +1,171 @@
+/* --- Hiển thị sao đánh giá --- */
+.rev-star-filled {
+  color: #fbbc04;
+  font-size: 16px;
+}
+
+.rev-star-empty {
+  color: #e0e0e0;
+  font-size: 16px;
+}
+
+.rev-rating-wrap {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* --- Hiển thị người dùng --- */
+.rev-user-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rev-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--sb-accent-soft);
+  color: var(--sb-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.rev-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.rev-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.rev-user-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.rev-user-id {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* --- Hiển thị sản phẩm & comment --- */
+.rev-product-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.rev-comment {
+  font-size: 13px;
+  color: var(--text-secondary);
+  max-width: 320px;
+  line-height: 1.5;
+  margin-top: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-style: italic;
+}
+
+.rev-date {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* --- MODAL HIỂN THỊ CHI TIẾT BÌNH LUẬN --- */
+.rev-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+}
+
+.rev-modal-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.rev-modal-box {
+  background: var(--body-bg);
+  width: 100%;
+  max-width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transform: translateY(-20px);
+  transition: 0.3s;
+}
+
+.rev-modal-overlay.show .rev-modal-box {
+  transform: translateY(0);
+}
+
+.rev-modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rev-modal-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.rev-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.rev-close-btn:hover {
+  color: #d93025;
+}
+
+.rev-modal-body {
+  padding: 20px;
+}
+
+.rev-modal-meta {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px dashed var(--card-border);
+}
+
+.rev-modal-meta strong {
+  color: var(--text-primary);
+}
+
+.rev-modal-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
