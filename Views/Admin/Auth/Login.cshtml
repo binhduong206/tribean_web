@@ -1,0 +1,51 @@
+@using Tribean.Routers.Admin
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TriBean Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Admin/css/login.css" />
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">Tri<span>Bean</span></div>
+                <p class="login-sub">Welcome back! Please login to your account.</p>
+            </div>
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-error">@TempData["Error"]</div>
+            }
+
+            <form method="post" action="/@AuthRouter.Login">
+                @Html.AntiForgeryToken()
+                
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" placeholder="Enter your username" required autocomplete="off" />
+                </div>
+                
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <label class="form-label" style="margin-bottom: 0;">Password</label>
+
+                    </div>
+                    <input type="password" name="password" class="form-control" placeholder="Enter your password" required />
+                </div>
+                
+                <button type="submit" class="btn-login">
+                    Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+<script src="~/Admin/js/alert.js"></script>
+</html>

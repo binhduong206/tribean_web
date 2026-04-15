@@ -56,14 +56,9 @@
 }
 
 .logo-icon {
-    width: 38px; height: 38px;
-    background: var(--sb-accent);
-    border-radius: var(--radius-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
+    display: block;
+    width: 60px; 
+    height: 38px;
 }
 
 .logo-text {
@@ -121,7 +116,7 @@
 
 .nav-item:hover {
     background: var(--sb-hover);
-    color: #e0e2ee;
+    color: var(--sb-text-active); 
 }
 
 .nav-item.active {
@@ -403,6 +398,76 @@
     border: 1px solid var(--card-border);
 }
 
+/* ── Profile Dropdown (Header) ── */
+.profile-dropdown-menu {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    min-width: 250px;
+    background: var(--card-bg); 
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+    z-index: 1000;
+}
+
+.profile-dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.profile-header-info {
+    padding: 16px;
+}
+
+.profile-name {
+    font-weight: 600;
+    color: var(--text-primary, #1a1d2e);
+    font-size: 14px;
+}
+
+.profile-role {
+    font-size: 12px;
+    color: var(--text-muted, #9ca3af);
+    margin-top: 2px;
+}
+
+.profile-divider {
+    height: 1px;
+    background: var(--card-border, #eaecf3);
+    margin: 0;
+}
+
+.profile-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    color: var(--text-secondary, #6b7280);
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.profile-menu-item svg {
+    width: 16px;
+    height: 16px;
+}
+
+.profile-menu-item:hover {
+    background: var(--content-bg, #f5f6fa);
+    color: var(--text-primary, #1a1d2e);
+}
+
+.profile-menu-item.text-danger:hover {
+    background: rgba(220, 38, 38, 0.1);
+    color: #ef4444;
+}
 /* ── Responsive ────────────────────────────── */
 @media (max-width: 1024px) {
     .sidebar { transform: translateX(-100%); }
@@ -423,6 +488,7 @@
 
     .sidebar.open ~ .sidebar-overlay { display: block; }
 }
+
 
 @media (max-width: 640px) {
     .main-content { padding: 20px 16px 0; }

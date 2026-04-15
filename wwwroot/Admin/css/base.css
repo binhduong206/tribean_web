@@ -1,11 +1,11 @@
 /* =============================================
    TRIBEAN ADMIN — base.css
-   Variables, Reset, Typography
+   Variables, Reset, Typography & Theme
    ============================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* ── CSS Variables ─────────────────────────── */
+/* ── CSS Variables (LIGHT MODE - MẶC ĐỊNH) ── */
 :root {
     /* Sidebar */
     --sidebar-w: 260px;
@@ -35,6 +35,10 @@
     --text-primary: #1a1d2e;
     --text-secondary: #6b7280;
     --text-muted: #9ca3af;
+
+    /* Table & Hover State */
+    --table-head-bg: #fafafa;
+    --hover-bg: #fafbff;
 
     /* Status */
     --green: #10b981;
@@ -70,6 +74,45 @@
     /* Transition */
     --transition: 0.18s ease;
     --transition-slow: 0.3s ease;
+
+    /* Overlay */
+    --overlay-bg: rgb(255, 255, 255);
+}
+
+/* ── DARK MODE OVERRIDES ───────────────────── */
+[data-theme="dark"] {
+    /* Content & Cards */
+    --content-bg: #0f1117;
+    --card-bg: #161820;
+    --card-border: #1e2130;
+    --card-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    
+    /* Header */
+    --header-bg: #161820;
+    --header-border: #1e2130;
+
+    /* Text */
+    --text-primary: #f3f4f6;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+
+    /* Table & Hover State */
+    --table-head-bg: #1e2130;
+    --hover-bg: rgba(255, 255, 255, 0.03);
+
+    /* Chuyển các màu Status soft thành nền trong suốt cho Dark mode */
+    --green-soft: rgba(16, 185, 129, 0.15);
+    --green-text: #34d399;
+    --red-soft: rgba(239, 68, 68, 0.15);
+    --red-text: #f87171;
+    --yellow-soft: rgba(245, 158, 11, 0.15);
+    --yellow-text: #fbbf24;
+    --blue-soft: rgba(59, 130, 246, 0.15);
+    --blue-text: #60a5fa;
+    --purple-soft: rgba(139, 92, 246, 0.15);
+    --purple-text: #a78bfa;
+    --orange-soft: rgba(249, 115, 22, 0.15);
+    --orange-text: #fb923c;
 }
 
 /* ── Reset ─────────────────────────────────── */
@@ -87,13 +130,15 @@ html, body {
     background: var(--content-bg);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Thêm transition cho body để khi đổi theme không bị giật */
+    transition: background-color var(--transition-slow), color var(--transition-slow);
 }
 
 a { text-decoration: none; color: inherit; }
 ul, ol { list-style: none; }
 img { display: block; max-width: 100%; }
-button { cursor: pointer; border: none; background: none; font-family: inherit; font-size: inherit; }
-input, select, textarea { font-family: inherit; font-size: inherit; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; font-size: inherit; color: var(--text-primary); }
+input, select, textarea { font-family: inherit; font-size: inherit; color: var(--text-primary); }
 
 /* ── Typography ────────────────────────────── */
 h1, h2, h3, h4, h5, h6 {
@@ -164,7 +209,6 @@ p { line-height: 1.6; color: var(--text-secondary); }
     background: var(--sb-accent);
     color: #fff;
 }
-
 .btn-primary:hover { background: #b8872a; box-shadow: 0 4px 12px rgba(200,151,58,0.35); }
 
 .btn-secondary {
@@ -172,7 +216,7 @@ p { line-height: 1.6; color: var(--text-secondary); }
     color: var(--text-primary);
     border: 1px solid var(--card-border);
 }
-.btn-secondary:hover { background: var(--content-bg); border-color: #d1d5db; }
+.btn-secondary:hover { background: var(--hover-bg); border-color: var(--text-muted); }
 
 .btn-danger {
     background: var(--red-soft);
@@ -189,6 +233,7 @@ p { line-height: 1.6; color: var(--text-secondary); }
     border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--card-shadow);
+    transition: background-color var(--transition-slow), border-color var(--transition-slow);
 }
 
 .card-header {
@@ -227,17 +272,8 @@ p { line-height: 1.6; color: var(--text-secondary); }
     font-size: 14px;
 }
 
-.alert-success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-}
-
-.alert-error {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-}
+.alert-success { color: var(--green-text); background-color: var(--green-soft); border-color: var(--green-text); }
+.alert-error { color: var(--red-text); background-color: var(--red-soft); border-color: var(--red-text); }
 
 /* ── Table ─────────────────────────────────── */
 .table-wrap {
@@ -258,7 +294,7 @@ thead th {
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--text-muted);
-    background: #fafafa;
+    background: var(--table-head-bg);
     border-bottom: 1px solid var(--card-border);
     white-space: nowrap;
 }
@@ -272,10 +308,8 @@ tbody td {
 
 tbody tr:last-child td { border-bottom: none; }
 
-tbody tr {
-    transition: background var(--transition);
-}
-tbody tr:hover { background: #fafbff; }
+tbody tr { transition: background var(--transition); }
+tbody tr:hover { background: var(--hover-bg); }
 
 /* ── Form Controls ─────────────────────────── */
 .form-group { margin-bottom: 16px; }
@@ -296,7 +330,7 @@ tbody tr:hover { background: #fafbff; }
     background: var(--card-bg);
     color: var(--text-primary);
     font-size: 14px;
-    transition: border-color var(--transition), box-shadow var(--transition);
+    transition: border-color var(--transition), box-shadow var(--transition), background-color var(--transition-slow);
     outline: none;
 }
 
@@ -346,7 +380,6 @@ select.form-control { appearance: none; background-image: url("data:image/svg+xm
 .empty-state p { font-size: 14px; }
 
 /* Filter Search */
-
 .filter-search {
     display: flex;
     align-items: center;

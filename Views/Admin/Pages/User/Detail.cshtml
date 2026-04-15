@@ -36,17 +36,17 @@
 
 <div class="detail-grid">
     @* ── Cột Trái: Hình Ảnh (Avatar) ── *@
-    <div class="detail-image-box" style="display: flex; flex-direction: column; justify-content: center;">
+    <div class="detail-image-box user-detail-container">
         @if (!string.IsNullOrEmpty(Model.AvatarUrl))
         {
-            <img src="@Model.AvatarUrl" alt="@Model.UserName" class="user-detail-avatar" />
+            <img src="@Model.AvatarUrl" alt="@Model.UserName" class="user-detail-avatar-large" />
         }
         else
         {
-            <div class="user-empty-avatar">
+            <div class="user-empty-avatar-large">
                 <span>👤</span>
             </div>
-            <p class="empty-image-text" style="text-align: center; margin-top: 16px;">No avatar uploaded</p>
+            <p class="empty-image-text text-center mt-12 text-muted">No avatar uploaded</p>
         }
     </div>
 
@@ -62,21 +62,24 @@
             <span class="badge @(Model.Role?.RoleName == "Admin" ? "badge-purple" : "badge-green") detail-badge">
                 @(Model.Role?.RoleName ?? "Client")
             </span>
-            <span class="badge badge-blue detail-badge" style="background: var(--content-bg); color: var(--text-secondary);">
+            @* Sử dụng lại class badge nhưng kết hợp text-secondary để hiển thị tên đăng nhập *@
+            <span class="badge detail-badge text-secondary">
                 @Model.UserName
             </span>
         </div>
 
-        @* ── Tận dụng khối Giá (detail-price-box) để làm khối Thống kê cực đẹp ── *@
-        <div class="detail-price-box" style="display: flex; justify-content: space-around; align-items: center; text-align: center;">
+        @* ── Khối Thống kê cực đẹp đã gỡ bỏ Inline CSS ── *@
+        <div class="detail-stats-wrapper">
             <div>
                 <span class="price-label">Total Orders</span>
-                <span class="price-final" style="color: var(--sb-accent);">@Model.Orders.Count</span>
+                <span class="price-final text-accent">@Model.Orders.Count</span>
             </div>
             
-            <div class="user-stat-divider">
+            <div class="stat-divider"></div>
+            
+            <div>
                 <span class="price-label">Product Reviews</span>
-                <span class="price-final" style="color: var(--blue);">@Model.Reviews.Count</span>
+                <span class="price-final text-primary">@Model.Reviews.Count</span>
             </div>
         </div>
 

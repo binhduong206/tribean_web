@@ -107,7 +107,7 @@
 }
 
 .rev-modal-box {
-  background: var(--body-bg);
+  background: var(--overlay-bg);
   width: 100%;
   max-width: 500px;
   border-radius: 8px;

@@ -53,46 +53,5 @@ namespace Tribean.Controllers.Admin
             TempData["Success"] = "Review has been removed.";
             return Redirect("/" + ReviewRouter.Index);
         }
-
-        // ==========================================
-        // 3. [API ẨN] TẠO DỮ LIỆU GIẢ ĐỂ TEST UI
-        // ==========================================
-        [HttpGet("/" + ReviewRouter.Seed)]
-        public async Task<IActionResult> SeedData()
-        {
-            var users = await _db.Users.ToListAsync();
-            var products = await _db.Products.ToListAsync();
-
-            // Phải có ít nhất 1 user và 1 product mới tạo review giả được
-            if (!users.Any() || !products.Any())
-            {
-                TempData["Error"] = "Warning: You need at least 1 User and 1 Product in database to generate reviews.";
-                return Redirect("/" + ReviewRouter.Index);
-            }
-
-            var random = new Random();
-            var fakeComments = new[] {
-                "Cà phê rất ngon, đậm đà, sẽ quay lại ủng hộ shop! Cà phê rất ngon, đậm đà, sẽ quay lại ủng hộ shop! Cà phê rất ngon, đậm đà, sẽ quay lại ủng hộ shop! Cà phê rất ngon, đậm đà, sẽ quay lại ủng hộ shop! Cà phê rất ngon, đậm đà, sẽ quay lại ủng hộ shop! Cà phê rất ngon, đậm đà, sẽ quay lại ủng hộ shop! Cà phê rất ngon, đậm đà, sẽ quay lại ủng hộ shop! Cà phê rất ngon, đậm đà, sẽ quay lại ủng hộ shop! Cà phê rất ngon, đậm đà, sẽ quay lại ủng hộ shop!"
-            };
-
-            for (int i = 0; i < 1; i++) // Bơm thẳng 15 review
-            {
-                var rUser = users[random.Next(users.Count)];
-                var rProduct = products[random.Next(products.Count)];
-
-                _db.Reviews.Add(new Review
-                {
-                    UserId = rUser.Id,
-                    ProductId = rProduct.Id,
-                    Rating = random.Next(3, 6), // Khách VIP toàn rate 3-5 sao thôi =))
-                    Comment = fakeComments[random.Next(fakeComments.Length)],
-                    CreatedAt = DateTime.UtcNow.AddDays(-random.Next(1, 30)) // Random ngày mua trong tháng qua
-                });
-            }
-
-            await _db.SaveChangesAsync();
-            TempData["Success"] = "Successfully generated 15 fake reviews!";
-            return Redirect("/" + ReviewRouter.Index);
-        }
     }
 }

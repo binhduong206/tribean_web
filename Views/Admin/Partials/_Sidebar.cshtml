@@ -1,6 +1,8 @@
 @* Views/Admin/Partials/_Sidebar.cshtml *@
 @using Tribean.Data
 @using Tribean.Models.Enums
+@using System.Security.Claims
+
 @* Tiêm thẳng Database vào Partial View này *@
 @inject ApplicationDbContext _db
 
@@ -10,12 +12,19 @@
 
     // Đếm tự động số lượng đơn hàng Pending
     var pendingOrderCount = _db.Orders.Count(o => o.Status == OrderStatus.Pending);
+
+    // Móc thông tin User từ Cookie (Giống bên Header)
+    var userName = User.Identity?.Name ?? "Admin";
+    var fullName = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value ?? userName;
+    var initial = userName.Length > 0 ? userName.Substring(0, 1).ToUpper() : "A";
+    var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? "Administrator";
+    var avatarUrl = User.Claims.FirstOrDefault(c => c.Type == "AvatarUrl")?.Value;
 }
 
 <aside class="sidebar" id="sidebar">
 
     <div class="sidebar-logo">
-        <div class="logo-icon">☕</div>
+        <img src="~/Images/logo.png" alt="TriBean Logo" class="logo-icon" />
         <div>
             <div class="logo-text">Tri<span>Bean</span></div>
             <div class="logo-sub">Admin Panel</div>
@@ -118,16 +127,25 @@
     </nav>
 
     <div class="sidebar-footer">
-        <div class="sidebar-user">
-            <div class="user-avatar">A</div>
+        <a href="/Admin/User/Edit/@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" class="sidebar-user" style="text-decoration: none; display: flex;">
+            <div class="user-avatar" style="overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--card-bg); color: var(--sb-accent);">
+                @if (!string.IsNullOrEmpty(avatarUrl))
+                {
+                    <img src="@avatarUrl" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;" />
+                }
+                else
+                {
+                    @initial
+                }
+            </div>
             <div class="user-info">
-                <div class="user-name">Admin</div>
-                <div class="user-role">Administrator</div>
+                <div class="user-name">@fullName</div>
+                <div class="user-role">@role</div>
             </div>
             <svg class="user-menu-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
             </svg>
-        </div>
+        </a>
     </div>
 
 </aside>

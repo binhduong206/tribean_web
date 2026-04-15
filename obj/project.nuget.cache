@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "xyW9o1Fva6k=",
+  "dgSpecHash": "cYm3HmZuv1A=",
   "success": true,
   "projectFilePath": "C:\\Users\\ASUS\\OneDrive\\Tài liệu\\ProjectC#\\Tribean\\Tribean.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ASUS\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
+    "C:\\Users\\ASUS\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.extensions\\6.0.0\\microsoft.aspnetcore.mvc.razor.extensions.6.0.0.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.runtimecompilation\\10.0.0\\microsoft.aspnetcore.mvc.razor.runtimecompilation.10.0.0.nupkg.sha512",

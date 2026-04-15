@@ -6,6 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@(ViewData["Title"] ?? "Admin") — TriBean</title>
 
+    <script>
+        let theme = localStorage.getItem('adminTheme');
+
+        // 2. Nếu chưa từng bấm, tự động check xem Window/Mac của sếp đang là Dark hay Light
+        if (!theme) {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            theme = prefersDark ? 'dark' : 'light';
+        }
+
+        // 3. Áp dụng ngay lập tức
+        document.documentElement.setAttribute('data-theme', theme);
+    </script>
+
     <link rel="stylesheet" href="~/Admin/css/base.css" />
     <link rel="stylesheet" href="~/Admin/css/layout.css" />
 
@@ -32,54 +45,9 @@
 
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<script>
-    const sidebar   = document.getElementById('sidebar');
-    const overlay   = document.getElementById('sidebarOverlay');
-    const toggleBtn = document.getElementById('sidebarToggle');
-
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-            overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
-        });
-    }
-
-    overlay.addEventListener('click', () => {
-        sidebar.classList.remove('open');
-        overlay.style.display = 'none';
-    });
-
-    const navLinks = document.querySelectorAll('.nav-item[href]');
-    navLinks.forEach(link => {
-        if (link.getAttribute('href') === window.location.pathname) {
-            link.classList.add('active');
-        }
-    });
-</script>
+<script src="~/Admin/js/index.js" asp-append-version="true"></script>
 
 @RenderSection("Scripts", required: false)
 
-<script>
-    // Hàm set Interval: Cứ lặp đi lặp lại một việc sau mỗi khoảng thời gian
-    setInterval(function () {
-        // Ngầm gọi xuống API để hỏi số lượng
-        fetch('/Admin/Order/GetPendingCount')
-            .then(response => response.json())
-            .then(data => {
-                const badge = document.getElementById('pendingOrderBadge');
-                if (badge) {
-                    if (data.count > 0) {
-                        // Nếu có đơn: Đổi con số và hiện màu vàng lên
-                        badge.innerText = data.count;
-                        badge.style.display = 'inline-flex';
-                    } else {
-                        // Nếu duyệt hết rồi (số = 0): Ẩn đi
-                        badge.style.display = 'none';
-                    }
-                }
-            })
-            .catch(error => console.error('Lỗi khi check đơn mới:', error));
-    }, 3000); // 3000ms = 3 giây check 1 lần (Bạn có thể đổi thành 5000 là 5 giây)
-</script>
 </body>
 </html>
