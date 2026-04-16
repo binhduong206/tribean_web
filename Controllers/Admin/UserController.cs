@@ -1,13 +1,15 @@
 // Controllers/Admin/UserController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http; // Bổ sung để dùng IFormFile
-using System.IO; // Bổ sung để xử lý file/thư mục
+using Microsoft.AspNetCore.Http; 
+using System.IO; 
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Tribean.Data;
 using Tribean.Models;
+// Thêm thư viện BCrypt
+using BCrypt.Net; 
 
 namespace Tribean.Controllers.Admin
 {
@@ -93,6 +95,9 @@ namespace Tribean.Controllers.Admin
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(User model, string password, IFormFile? mainImage)
         {
+            // Ngắt kiểm tra lỗi ảo cho thuộc tính Navigation
+            ModelState.Remove("Role");
+
             // --- SERVER-SIDE VALIDATION ---
             // 1. Kiểm tra trùng Username
             if (await _db.Users.AnyAsync(u => u.UserName == model.UserName))
@@ -135,8 +140,11 @@ namespace Tribean.Controllers.Admin
             // Gán các giá trị mặc định
             model.Id = Guid.NewGuid().ToString();
             model.CreatedAt = DateTime.UtcNow;
-            model.Password = password; // Lưu ý: Thực tế nên mã hóa (Hash) password ở đây
+            
+            // 👇 BĂM MẬT KHẨU Ở ĐÂY TRƯỚC KHI LƯU 👇
+            model.Password = BCrypt.Net.BCrypt.HashPassword(password); 
 
+            // Lưu ý: Ngày sinh (BirthDay) đã tự động được Entity Framework map từ Form vào model.BirthDay
             _db.Users.Add(model);
             await _db.SaveChangesAsync();
 
@@ -163,6 +171,10 @@ namespace Tribean.Controllers.Admin
         {
             var user = await _db.Users.FindAsync(id);
             if (user == null) return NotFound();
+
+            // Ngắt kiểm tra lỗi ảo để tránh kẹt form
+            ModelState.Remove("Password");
+            ModelState.Remove("Role");
 
             // --- SERVER-SIDE VALIDATION CHO EDIT ---
             // 1. Kiểm tra nếu Admin đổi Username và Username mới đó đã bị người khác lấy
@@ -213,11 +225,14 @@ namespace Tribean.Controllers.Admin
             user.Email = model.Email;
             user.PhoneNumber = model.PhoneNumber;
             user.RoleId = model.RoleId;
+            
+            // LƯU NGÀY SINH TỪ FORM VÀO DATABASE
+            user.BirthDay = model.BirthDay;
 
-            // Nếu admin có nhập mật khẩu mới thì mới cập nhật
+            // 👇 NẾU CÓ ĐỔI MẬT KHẨU THÌ BĂM MẬT KHẨU MỚI 👇
             if (!string.IsNullOrEmpty(newPassword))
             {
-                user.Password = newPassword; // Thực tế nên Hash password
+                user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword); 
             }
 
             await _db.SaveChangesAsync();

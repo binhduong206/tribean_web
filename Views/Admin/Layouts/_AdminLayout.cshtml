@@ -7,6 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@(ViewData["Title"] ?? "Admin") — TriBean</title>
 
+    <script>
+        let theme = localStorage.getItem('adminTheme');
+
+        // 2. Nếu chưa từng bấm, tự động check xem Window/Mac của sếp đang là Dark hay Light
+        if (!theme) {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            theme = prefersDark ? 'dark' : 'light';
+        }
+
+        // 3. Áp dụng ngay lập tức
+        document.documentElement.setAttribute('data-theme', theme);
+    </script>
+
     <link rel="stylesheet" href="~/Admin/css/base.css" />
     <link rel="stylesheet" href="~/Admin/css/layout.css" />
 
@@ -34,6 +47,7 @@
 
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+<<<<<<< HEAD
     <script>
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
@@ -83,6 +97,12 @@
                     .catch(error => console.error('Lỗi khi check đơn mới:', error));
             }, 3000); // 3000ms = 3 giây check 1 lần (Bạn có thể đổi thành 5000 là 5 giây)
     </script>
+=======
+<script src="~/Admin/js/index.js" asp-append-version="true"></script>
+
+@RenderSection("Scripts", required: false)
+
+>>>>>>> 11c6fc954de300063b6cec7b4ceaedcbf43a654c
 </body>
 
 </html>

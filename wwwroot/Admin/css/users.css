@@ -1,44 +1,8 @@
-/* Chỉ thêm một chút CSS nội bộ nhỏ để bo tròn ảnh Avatar thay vì hình vuông như Product */
-.user-form-grid {
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 20px;
-    align-items: start;
-}
+/* =============================================
+   TRIBEAN ADMIN — users.css
+   ============================================= */
 
-.user-form-side {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.user-detail-avatar {
-    width: 240px !important;
-    height: 240px !important;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 0 auto;
-    display: block;
-    box-shadow: var(--card-shadow);
-}
-
-.user-empty-avatar {
-    width: 240px;
-    height: 240px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    background: var(--content-bg);
-    font-size: 64px;
-}
-
-.user-stat-divider {
-    border-left: 1px solid var(--card-border);
-    padding-left: 40px;
-}
-
+/* ── 1. User Stats Strip (Thống kê Index) ── */
 .user-stats-strip {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -54,7 +18,7 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    box-shadow: var(--card-shadow);
+    box-shadow: var(--shadow-sm);
 }
 
 .user-stat-icon {
@@ -69,21 +33,20 @@
 
 .user-stat-icon.total {
     background: var(--blue-soft);
-    color: var(--blue-text);
+    color: var(--blue);
 }
 
 .user-stat-icon.admin {
     background: var(--purple-soft);
-    color: var(--purple-text);
+    color: var(--purple);
 }
 
 .user-stat-icon.client {
     background: var(--green-soft);
-    color: var(--green-text);
+    color: var(--green);
 }
 
 .user-stat-val {
-    font-family: var(--font-display);
     font-size: 24px;
     font-weight: 700;
     color: var(--text-primary);
@@ -95,9 +58,260 @@
     margin-top: 4px;
 }
 
+/* ── 2. User List Grid (Danh sách Index) ── */
+.grid-user-list {
+    display: grid;
+    /* Cấu trúc 8 cột: Checkbox | User | Email | Phone | Birthday | Role | Joined | Actions */
+    grid-template-columns: 40px 1.5fr 1.5fr 110px 100px 100px 100px 90px;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-list-row {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--card-border);
+    transition: background 0.2s;
+}
+
+.user-list-row:hover {
+    background: var(--sb-accent-soft);
+}
+
+.user-list-row:last-child {
+    border-bottom: none;
+}
+
+.user-cell-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow: hidden;
+}
+
+.user-cell-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.user-cell-avatar-fallback {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--sb-accent-soft);
+    color: var(--sb-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.user-cell-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-cell-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-cell-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cell-data {
+    font-size: 13px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cell-data-secondary {
+    color: var(--text-secondary);
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── 3. Form Grid (Create & Edit) ── */
+.user-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    align-items: start;
+}
+
+.user-form-side {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
 .user-text-danger {
     display: inline-block;
     color: var(--red);
     margin-top: 10px;
     font-size: 12px;
+}
+
+/* Utilities (Giúp dọn sạch Inline CSS) */
+.flex-row {
+    display: flex;
+    gap: 16px;
+}
+
+.flex-1 {
+    flex: 1;
+    min-width: 0;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.w-40 {
+    width: 40px;
+}
+
+.w-100 {
+    width: 100px;
+}
+
+.mb-16 {
+    margin-bottom: 16px;
+}
+
+.mt-12 {
+    margin-top: 12px;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.d-none {
+    display: none;
+}
+
+.inline-flex {
+    display: inline-flex;
+}
+
+.gap-12 {
+    gap: 12px;
+}
+
+.btn-submit-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.avatar-upload-preview {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto;
+    display: block;
+}
+
+/* ── 4. Trang Chi tiết (Detail) ── */
+.user-detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-detail-avatar-large {
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: var(--shadow-sm);
+    margin: 0 auto;
+    display: block;
+}
+
+.user-empty-avatar-large {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    background: var(--content-bg);
+    font-size: 64px;
+    border: 2px dashed var(--card-border);
+}
+
+.detail-stats-wrapper {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background: var(--content-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    margin: 20px 0;
+    text-align: center;
+}
+
+.stat-divider {
+    width: 1px;
+    background: var(--card-border);
+    height: 40px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+    .user-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Ẩn bớt cột Phone, Birthday, Joined trên mobile để bảng không bị tràn */
+    .grid-user-list {
+        grid-template-columns: 40px 1.5fr 1fr 90px;
+    }
+
+    .grid-user-list>*:nth-child(4),
+    .grid-user-list>*:nth-child(5),
+    .grid-user-list>*:nth-child(7) {
+        display: none;
+    }
 }

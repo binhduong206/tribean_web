@@ -75,10 +75,21 @@ Enumerable.Empty<Tribean.Models.Category>();
                                 <option value="">Select category</option>
                                 @foreach (var cat in categories)
                                 {
+<<<<<<< HEAD
                                     <option value="@cat.Id" selected="@(Model?.CategoryId == cat.Id ? "selected" : null)">
                                         @cat.CategoryName</option>
                                     }
                                 </select>
+=======
+                                    <option value="@cat.Id" selected="@(Model?.CategoryId == cat.Id ? "selected" : null)">@cat.CategoryName</option>
+                                }
+                            </select>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                            <div class="form-group">
+                                <label class="form-label">Base Price ($) *</label>
+                                <input type="number" name="Price" class="form-control" placeholder="45.00" min="0" step="0.01" required value="@Model?.Price" />
+>>>>>>> 11c6fc954de300063b6cec7b4ceaedcbf43a654c
                             </div>
                             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                                 <div class="form-group">
