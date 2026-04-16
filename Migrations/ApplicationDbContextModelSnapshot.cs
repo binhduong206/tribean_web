@@ -51,7 +51,7 @@ namespace Tribean.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("Tribean.Models.Cart", b =>
@@ -68,7 +68,7 @@ namespace Tribean.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("Tribean.Models.CartItem", b =>
@@ -92,7 +92,7 @@ namespace Tribean.Migrations
 
                     b.HasIndex("SizeId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("Tribean.Models.Category", b =>
@@ -107,7 +107,7 @@ namespace Tribean.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Tribean.Models.Discount", b =>
@@ -138,7 +138,7 @@ namespace Tribean.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Discounts");
+                    b.ToTable("Discounts", (string)null);
                 });
 
             modelBuilder.Entity("Tribean.Models.Order", b =>
@@ -187,7 +187,7 @@ namespace Tribean.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("Tribean.Models.OrderDetail", b =>
@@ -214,7 +214,7 @@ namespace Tribean.Migrations
 
                     b.HasIndex("SizeId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("Tribean.Models.Product", b =>
@@ -253,7 +253,7 @@ namespace Tribean.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Tribean.Models.ProductImage", b =>
@@ -273,7 +273,7 @@ namespace Tribean.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("ProductImages", (string)null);
                 });
 
             modelBuilder.Entity("Tribean.Models.Review", b =>
@@ -304,7 +304,7 @@ namespace Tribean.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("Tribean.Models.Role", b =>
@@ -319,7 +319,7 @@ namespace Tribean.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new
@@ -349,7 +349,7 @@ namespace Tribean.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sizes");
+                    b.ToTable("Sizes", (string)null);
 
                     b.HasData(
                         new
@@ -419,7 +419,7 @@ namespace Tribean.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Tribean.Models.Address", b =>

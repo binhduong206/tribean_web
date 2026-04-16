@@ -1,20 +1,25 @@
-// Program.cs
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 using Tribean.Data;
+using Tribean.Repositories;
+using Tribean.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── Đăng ký DbContext ────────────────────────────────────
+
+// ─────────────────────────────────────────
+// 1. SERVICES
+// ─────────────────────────────────────────
+
+// DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlOptions => sqlOptions.CommandTimeout(30)
-    )
-);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddControllersWithViews();
+// Controller (API + MVC)
+builder.Services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
 
-// ── Session (cần cho Admin auth sau này) ─────────────────
+// Session
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -22,11 +27,38 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Thêm cấu hình Runtime Compilation
-builder.Services.AddControllersWithViews()
-                .AddRazorRuntimeCompilation();
+// Dependency Injection
+builder.Services.AddScoped<IHomeRepository, HomeRepository>();
+builder.Services.AddScoped<IHomeService, HomeService>();
+
+// Swagger / OpenAPI
+builder.Services.AddOpenApi();
+
+
+// 🔥 CORS (PHẢI đặt ở đây)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy
+                .WithOrigins("http://127.0.0.1:5500", "http://localhost:5500")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
+
+// ─────────────────────────────────────────
+// 2. BUILD APP
+// ─────────────────────────────────────────
 
 var app = builder.Build();
+
+
+// ─────────────────────────────────────────
+// 3. MIDDLEWARE PIPELINE
+// ─────────────────────────────────────────
 
 if (!app.Environment.IsDevelopment())
 {
@@ -34,27 +66,54 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+}
+
+
+// 🔥 THỨ TỰ QUAN TRỌNG
+
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontend"); // 🔥 phải trước MapControllers
+
 app.UseStaticFiles();
+
 app.UseRouting();
 
-app.UseSession(); // ← Phải trước UseAuthorization
+app.UseSession();
+
 app.UseAuthorization();
 
-// ── Route Admin area ─────────────────────────────────────
-app.MapControllerRoute(
-    name: "admin",
-    pattern: "Admin/{controller=Dashboard}/{action=Index}/{id?}");
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+// ─────────────────────────────────────────
+// 4. ROUTES
+// ─────────────────────────────────────────
 
-// ── Tự động migrate khi khởi động (tuỳ chọn) ────────────
+// API
+app.MapControllers();
+
+// (Nếu bạn dùng MVC View thì bật lại)
+// app.MapControllerRoute(
+//     name: "default",
+//     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+// ─────────────────────────────────────────
+// 5. AUTO MIGRATE (optional)
+// ─────────────────────────────────────────
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     db.Database.Migrate();
 }
+
+
+// ─────────────────────────────────────────
+// 6. RUN
+// ─────────────────────────────────────────
 
 app.Run();

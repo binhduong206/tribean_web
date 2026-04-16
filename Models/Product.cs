@@ -29,7 +29,7 @@ namespace Tribean.Models
         [Column(TypeName = "decimal(18,2)")]
         [Required(ErrorMessage = "Vui lòng nhập giá tiền")]
         public decimal Price { get; set; }
-        
+
         [Range(0, 100, ErrorMessage = "Giảm giá chỉ từ 0% đến 100%")]
         public int Discount { get; set; } = 0; // Mặc định là 0%
 

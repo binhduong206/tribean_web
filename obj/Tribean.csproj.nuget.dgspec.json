@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ASUS\\OneDrive\\Tài liệu\\ProjectC#\\Tribean\\Tribean.csproj": {}
+    "D:\\BaoCaoWebNangCao\\tribean\\Tribean.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ASUS\\OneDrive\\Tài liệu\\ProjectC#\\Tribean\\Tribean.csproj": {
+    "D:\\BaoCaoWebNangCao\\tribean\\Tribean.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ASUS\\OneDrive\\Tài liệu\\ProjectC#\\Tribean\\Tribean.csproj",
+        "projectUniqueName": "D:\\BaoCaoWebNangCao\\tribean\\Tribean.csproj",
         "projectName": "Tribean",
-        "projectPath": "C:\\Users\\ASUS\\OneDrive\\Tài liệu\\ProjectC#\\Tribean\\Tribean.csproj",
-        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ASUS\\OneDrive\\Tài liệu\\ProjectC#\\Tribean\\obj\\",
+        "projectPath": "D:\\BaoCaoWebNangCao\\tribean\\Tribean.csproj",
+        "packagesPath": "C:\\Users\\bandu\\.nuget\\packages\\",
+        "outputPath": "D:\\BaoCaoWebNangCao\\tribean\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\bandu\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -54,6 +54,10 @@
               "target": "Package",
               "version": "[10.0.0, )"
             },
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[10.0.5, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -69,6 +73,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[10.0.5, )"
+            },
+            "Scalar.AspNetCore": {
+              "target": "Package",
+              "version": "[2.13.22, )"
             }
           },
           "imports": [

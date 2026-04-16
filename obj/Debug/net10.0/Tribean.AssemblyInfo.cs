@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Tribean")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+567ef929674faf4f367fe714dff5df7b17c4c7a0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Tribean")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Tribean")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
